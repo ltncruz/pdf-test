@@ -8,8 +8,9 @@ Gerado por `node scripts/licenses.mjs` (não edite à mão; `npm run licenses --
 
 | Pacote | Versão instalada | Licença (package.json) | Arquivos de licença lidos | NOTICE | Requerido por |
 |---|---|---|---|---|---|
-| @napi-rs/canvas | 0.1.99 | MIT | LICENSE (sha256 8802fecf9da4) | — | pdfjs-dist@5.6.205 |
-| @napi-rs/canvas-linux-x64-gnu | 0.1.99 | MIT | LICENSE (herdado de @napi-rs/canvas@0.1.99) (sha256 8802fecf9da4) | — | @napi-rs/canvas@0.1.99 |
+| @napi-rs/canvas | 0.1.100 | MIT | LICENSE (sha256 8802fecf9da4) | — | pdfjs-dist@5.6.205 |
+| @napi-rs/canvas-linux-x64-gnu | 0.1.100 | MIT | LICENSE (herdado de @napi-rs/canvas@0.1.100) (sha256 8802fecf9da4) | — | @napi-rs/canvas@0.1.100 |
+| @napi-rs/canvas-linux-x64-musl | 0.1.100 | MIT | LICENSE (herdado de @napi-rs/canvas@0.1.100) (sha256 8802fecf9da4) | — | @napi-rs/canvas@0.1.100 |
 | @pdf-lib/standard-fonts | 1.0.0 | MIT | LICENSE.md (sha256 45cc2bb9957e) | — | pdf-lib@1.17.1 |
 | @pdf-lib/upng | 1.0.1 | MIT | LICENSE (sha256 c1fb8861eca2) | — | pdf-lib@1.17.1 |
 | node-readable-to-web-readable-stream | 0.4.2 | MIT | LICENSE.txt (sha256 d1b111f5a5b6) | — | pdfjs-dist@5.6.205 |
@@ -28,10 +29,10 @@ Gerado por `node scripts/licenses.mjs` (não edite à mão; `npm run licenses --
 | @esbuild/linux-x64 | 0.27.7 | MIT | LICENSE.md (herdado de esbuild@0.27.7) (sha256 b40ec5baec7b) | — | esbuild@0.27.7 |
 | @types/node | 25.6.0 | MIT | LICENSE (sha256 c2cfccb812fe) | — | (projeto) |
 | esbuild | 0.27.7 | MIT | LICENSE.md (sha256 b40ec5baec7b) | — | (projeto) |
-| get-tsconfig | 4.14.0 | MIT | LICENSE (sha256 10c904a49af4) | — | tsx@4.21.0 |
+| get-tsconfig | 4.14.3 | MIT | LICENSE (sha256 10c904a49af4) | — | tsx@4.21.0 |
 | playwright | 1.56.0 | Apache-2.0 | LICENSE (sha256 45873d00a0dd) | NOTICE (sha256 6d602191187b); ThirdPartyNotices.txt (sha256 2eba4794fdff) | (projeto) |
 | playwright-core | 1.56.0 | Apache-2.0 | LICENSE (sha256 45873d00a0dd) | NOTICE (sha256 6d602191187b); ThirdPartyNotices.txt (sha256 450299275b0e) | playwright@1.56.0 |
-| resolve-pkg-maps | 1.0.0 | MIT | LICENSE (sha256 10c904a49af4) | — | get-tsconfig@4.14.0 |
+| resolve-pkg-maps | 1.0.0 | MIT | LICENSE (sha256 10c904a49af4) | — | get-tsconfig@4.14.3 |
 | tsx | 4.21.0 | MIT | LICENSE (sha256 8dded67841a9) | — | (projeto) |
 | typescript | 6.0.3 | Apache-2.0 | LICENSE.txt (sha256 a7d00bfd5452) | ThirdPartyNoticeText.txt (sha256 1af3c68039c5) | (projeto) |
 | undici-types | 7.19.2 | MIT | LICENSE (sha256 a6db8096b270) | — | @types/node@25.6.0 |
@@ -67,7 +68,7 @@ Esses assets são usados só pelo viewer para desenhar fontes padrão NÃO incor
 
 | Ferramenta | Versão / licença | Uso |
 |---|---|---|
-| qpdf | qpdf version 11.9.0 — Apache-2.0 (confirmado por `qpdf --copyright`) | apenas nos testes, como validador estrutural independente (`qpdf --check`). Não faz parte do produto neste slice. |
+| qpdf | não encontrado no ambiente | apenas nos testes, como validador estrutural independente (`qpdf --check`). Não faz parte do produto neste slice. |
 
 ## Dependências opcionais não instaladas neste ambiente
 
@@ -96,16 +97,15 @@ Esses assets são usados só pelo viewer para desenhar fontes padrão NÃO incor
 - `@esbuild/win32-arm64` (opcional de `esbuild@0.27.7`)
 - `@esbuild/win32-ia32` (opcional de `esbuild@0.27.7`)
 - `@esbuild/win32-x64` (opcional de `esbuild@0.27.7`)
-- `@napi-rs/canvas-android-arm64` (opcional de `@napi-rs/canvas@0.1.99`)
-- `@napi-rs/canvas-darwin-arm64` (opcional de `@napi-rs/canvas@0.1.99`)
-- `@napi-rs/canvas-darwin-x64` (opcional de `@napi-rs/canvas@0.1.99`)
-- `@napi-rs/canvas-linux-arm-gnueabihf` (opcional de `@napi-rs/canvas@0.1.99`)
-- `@napi-rs/canvas-linux-arm64-gnu` (opcional de `@napi-rs/canvas@0.1.99`)
-- `@napi-rs/canvas-linux-arm64-musl` (opcional de `@napi-rs/canvas@0.1.99`)
-- `@napi-rs/canvas-linux-riscv64-gnu` (opcional de `@napi-rs/canvas@0.1.99`)
-- `@napi-rs/canvas-linux-x64-musl` (opcional de `@napi-rs/canvas@0.1.99`)
-- `@napi-rs/canvas-win32-arm64-msvc` (opcional de `@napi-rs/canvas@0.1.99`)
-- `@napi-rs/canvas-win32-x64-msvc` (opcional de `@napi-rs/canvas@0.1.99`)
+- `@napi-rs/canvas-android-arm64` (opcional de `@napi-rs/canvas@0.1.100`)
+- `@napi-rs/canvas-darwin-arm64` (opcional de `@napi-rs/canvas@0.1.100`)
+- `@napi-rs/canvas-darwin-x64` (opcional de `@napi-rs/canvas@0.1.100`)
+- `@napi-rs/canvas-linux-arm-gnueabihf` (opcional de `@napi-rs/canvas@0.1.100`)
+- `@napi-rs/canvas-linux-arm64-gnu` (opcional de `@napi-rs/canvas@0.1.100`)
+- `@napi-rs/canvas-linux-arm64-musl` (opcional de `@napi-rs/canvas@0.1.100`)
+- `@napi-rs/canvas-linux-riscv64-gnu` (opcional de `@napi-rs/canvas@0.1.100`)
+- `@napi-rs/canvas-win32-arm64-msvc` (opcional de `@napi-rs/canvas@0.1.100`)
+- `@napi-rs/canvas-win32-x64-msvc` (opcional de `@napi-rs/canvas@0.1.100`)
 - `fsevents` (opcional de `playwright@1.56.0`)
 - `fsevents` (opcional de `tsx@4.21.0`)
 
