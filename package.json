@@ -1,0 +1,32 @@
+{
+  "name": "simply-pdf",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "license": "UNLICENSED",
+  "description": "Simply PDF - editor de PDF universal, local-first (vertical slice v0.1-v0.5)",
+  "engines": { "node": ">=22.13.0" },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.ui.json --noEmit",
+    "test": "tsx --test \"tests/core/*.test.ts\" \"tests/integration/*.test.ts\"",
+    "test:e2e": "node scripts/build-web.mjs && tsx --test tests/e2e/slice.e2e.test.ts",
+    "build:web": "node scripts/build-web.mjs",
+    "check:boundaries": "node scripts/check-boundaries.mjs",
+    "licenses": "node scripts/licenses.mjs",
+    "fixtures": "tsx tests/fixtures/write-fixtures.ts",
+    "verify": "npm run check:boundaries && npm run licenses -- --check && npm run typecheck && npm test && npm run test:e2e"
+  },
+  "dependencies": {
+    "pdf-lib": "1.17.1",
+    "pdfjs-dist": "5.6.205",
+    "react": "19.2.5",
+    "react-dom": "19.2.5"
+  },
+  "devDependencies": {
+    "@types/node": "25.6.0",
+    "esbuild": "0.27.7",
+    "playwright": "1.56.0",
+    "tsx": "4.21.0",
+    "typescript": "6.0.3"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "embedded-font.pdf": {
+    "bytes": 29685,
+    "sha256": "ae085678994a6eff6cbe25c1e37812e552deb0993e542c9bf3d87b894f7eacd3"
+  },
+  "encrypted-owner-only.pdf": {
+    "bytes": 2407,
+    "sha256": "c76b8b106a1abc98d37dc73aaea4d99f73d3b4f6106c663d4df7eb5a55ce63e5"
+  },
+  "encrypted-user-password.pdf": {
+    "bytes": 2404,
+    "sha256": "2ba2b0e5a0b19ea0daf5bda4a1126fdac7cf5882f796579fd0e946a78e1cebc3"
+  }
+}

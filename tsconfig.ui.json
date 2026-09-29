@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "jsx": "react-jsx" },
+  "include": ["src", "tests/e2e"],
+  "exclude": []
+}
