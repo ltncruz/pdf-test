@@ -118,15 +118,15 @@ export function createPdfJsRenderer(
 
 
           const dpr =
-            (globalThis as { devicePixelRatio?: string }).devicePixelRatio ?? 1;
+  (globalThis as { devicePixelRatio?: number }).devicePixelRatio ?? 1;
 
 
-          const plan = planCanvas(
-            viewport.width,
-            viewport.height,
-            dpr,
-            limits
-          );
+const plan = planCanvas(
+  viewport.width,
+  viewport.height,
+  dpr,
+  limits
+);
 
 
           canvas.width = plan.width;
