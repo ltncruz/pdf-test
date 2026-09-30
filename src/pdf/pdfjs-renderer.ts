@@ -7,8 +7,8 @@ import type { PdfJs, PdfJsOptions } from './pdfjs-reader';
 import type { PageRenderer } from './renderer-port';
 
 /**
- * Renderizador PDF.js. Guardrails: no máximo `limits.maxConcurrentRenders` renderizações simultâneas (fila FIFO,
- * cancelável), escala restrita à faixa permitida e canvas nunca acima de `limits.maxCanvasPixels`.
+ * Renderizador PDF.js.
+ * Controla concorrência, cancelamento, escala e ciclo de vida dos documentos abertos.
  */
 export function createPdfJsRenderer(
   pdfjs: PdfJs,
@@ -26,48 +26,46 @@ export function createPdfJsRenderer(
 
   const limiter = createConcurrencyLimiter(limits.maxConcurrentRenders);
 
-  const open = (id: SourceId): Promise<PdfJsNamespace.PDFDocumentProxy> => {
+
+  const open = async (
+    id: SourceId
+  ): Promise<PdfJsNamespace.PDFDocumentProxy> => {
+
     const existing = docs.get(id);
 
     if (existing) {
       return existing.promise;
     }
 
-    const loaded = sources.get(id).then((bytes) => {
-      const task = pdfjs.getDocument({
-        data: bytes.slice(),
-        ...options,
-      });
+    const bytes = await sources.get(id);
 
-      const promise = task.promise;
-
-      docs.set(id, {
-        task,
-        promise,
-      });
-
-      return promise;
+    const task = pdfjs.getDocument({
+      data: bytes.slice(),
+      ...options,
     });
 
-    const cached: LoadedDocument = {
-      task: undefined as unknown as PdfJsNamespace.PDFDocumentLoadingTask,
-      promise: loaded,
+    const loaded: LoadedDocument = {
+      task,
+      promise: task.promise,
     };
 
-    docs.set(id, cached);
+    docs.set(id, loaded);
 
-    loaded.catch(() => {
-      docs.delete(id);
+    loaded.promise.catch(() => {
+      if (docs.get(id) === loaded) {
+        docs.delete(id);
+      }
     });
 
-    return loaded;
+    return loaded.promise;
   };
 
 
   return {
 
     async render({ sourceId, index, rotation, scale, canvas, signal }) {
-      let release: () => void;
+
+      let release: (() => void);
 
       try {
         release = await limiter.acquire(signal);
@@ -75,23 +73,35 @@ export function createPdfJsRenderer(
         return null;
       }
 
+
       try {
-        if (signal?.aborted) return null;
+
+        if (signal?.aborted) {
+          return null;
+        }
+
 
         const doc = await open(sourceId);
 
         const page = await doc.getPage(index + 1);
 
+
         try {
-          if (signal?.aborted) return null;
+
+          if (signal?.aborted) {
+            return null;
+          }
+
 
           const viewport = page.getViewport({
             scale: clampRenderScale(scale, limits),
             rotation,
           });
 
+
           const dpr =
             (globalThis as { devicePixelRatio?: number }).devicePixelRatio ?? 1;
+
 
           const plan = planCanvas(
             viewport.width,
@@ -100,11 +110,13 @@ export function createPdfJsRenderer(
             limits
           );
 
+
           canvas.width = plan.width;
           canvas.height = plan.height;
 
           canvas.style.width = `${viewport.width}px`;
           canvas.style.height = `${viewport.height}px`;
+
 
           const task = page.render({
             canvas,
@@ -122,15 +134,25 @@ export function createPdfJsRenderer(
                   ],
           });
 
-          const onAbort = (): void => task.cancel();
 
-          signal?.addEventListener('abort', onAbort, {
-            once: true,
-          });
+          const onAbort = (): void => {
+            task.cancel();
+          };
+
+
+          signal?.addEventListener(
+            'abort',
+            onAbort,
+            { once: true }
+          );
+
 
           try {
+
             await task.promise;
+
           } catch (error) {
+
             if (
               (error as { name?: string }).name ===
               'RenderingCancelledException'
@@ -139,49 +161,73 @@ export function createPdfJsRenderer(
             }
 
             throw error;
+
           } finally {
-            signal?.removeEventListener('abort', onAbort);
+
+            signal?.removeEventListener(
+              'abort',
+              onAbort
+            );
+
           }
+
 
           return {
             reducedResolution: plan.reduced,
           };
 
+
         } finally {
+
           page.cleanup();
+
         }
 
+
       } finally {
+
         release();
+
       }
+
     },
 
 
     async release(sourceId) {
+
       const loaded = docs.get(sourceId);
+
+      if (!loaded) {
+        return;
+      }
+
 
       docs.delete(sourceId);
 
-      if (loaded?.task) {
-        await loaded.task
-          .destroy()
-          .catch(() => undefined);
-      }
+
+      await loaded.task
+        .destroy()
+        .catch(() => undefined);
+
     },
 
 
     async dispose() {
+
       const all = [...docs.values()];
 
       docs.clear();
 
+
       await Promise.all(
         all.map((loaded) =>
           loaded.task
-            ? loaded.task.destroy().catch(() => undefined)
-            : Promise.resolve()
+            .destroy()
+            .catch(() => undefined)
         )
       );
+
     },
+
   };
 }
