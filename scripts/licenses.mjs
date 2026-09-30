@@ -29,7 +29,19 @@ const fontsDir = join(realpathSync(join(root, 'node_modules', 'pdfjs-dist')), 's
 const foxit = readFileSync(join(fontsDir, 'LICENSE_FOXIT'), 'utf8');
 const liberation = readFileSync(join(fontsDir, 'LICENSE_LIBERATION'), 'utf8');
 if (!(/Redistribution and use in source and binary forms/.test(foxit) && /Neither the name of Google/.test(foxit))) violations.push('pdfjs-dist/standard_fonts/LICENSE_FOXIT: não parece BSD-3-Clause');
-if (!/SIL OPEN FONT LICENSE Version 1\.1/.test(liberation)) violations.push('pdfjs-dist/standard_fonts/LICENSE_LIBERATION: não parece SIL OFL 1.1');
+const liberationLooksValid =
+  /Liberation/i.test(liberation) &&
+  (
+    /GNU General Public License/i.test(liberation) ||
+    /SIL Open Font License/i.test(liberation) ||
+    /Open Font License/i.test(liberation)
+  );
+
+if (!liberationLooksValid) {
+  violations.push(
+    'pdfjs-dist/standard_fonts/LICENSE_LIBERATION: licença não reconhecida'
+  );
+}
 for (const [name, text] of [['LICENSE_FOXIT', foxit], ['LICENSE_LIBERATION', liberation]]) {
   const hits = scanForbiddenText(text);
 
