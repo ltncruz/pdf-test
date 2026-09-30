@@ -69,7 +69,7 @@ Esses assets são usados só pelo viewer para desenhar fontes padrão NÃO incor
 
 | Ferramenta | Versão / licença | Uso |
 |---|---|---|
-| qpdf | não encontrado no ambiente | apenas nos testes, como validador estrutural independente (`qpdf --check`). Não faz parte do produto neste slice. |
+| qpdf | qpdf version 11.9.0 — Apache-2.0 (confirmado por `qpdf --copyright`) | apenas nos testes, como validador estrutural independente (`qpdf --check`). Não faz parte do produto neste slice. |
 
 ## Dependências opcionais não instaladas neste ambiente
 
