@@ -7,8 +7,8 @@ import type { PdfJs, PdfJsOptions } from './pdfjs-reader';
 import type { PageRenderer } from './renderer-port';
 
 /**
- * Renderizador PDF.js.
- * Controla concorrência, cancelamento, escala e ciclo de vida dos documentos abertos.
+ * Renderizador PDF.js. Guardrails: no máximo `limits.maxConcurrentRenders` renderizações simultâneas (fila FIFO,
+ * cancelável), escala restrita à faixa permitida e canvas nunca acima de `limits.maxCanvasPixels`.
  */
 export function createPdfJsRenderer(
   pdfjs: PdfJs,
@@ -18,16 +18,17 @@ export function createPdfJsRenderer(
 ): PageRenderer {
 
   type LoadedDocument = {
-    task: PdfJsNamespace.PDFDocumentLoadingTask;
+    task?: PdfJsNamespace.PDFDocumentLoadingTask;
     promise: Promise<PdfJsNamespace.PDFDocumentProxy>;
   };
+
 
   const docs = new Map<SourceId, LoadedDocument>();
 
   const limiter = createConcurrencyLimiter(limits.maxConcurrentRenders);
 
 
-  const open = async (
+  const open = (
     id: SourceId
   ): Promise<PdfJsNamespace.PDFDocumentProxy> => {
 
@@ -37,25 +38,37 @@ export function createPdfJsRenderer(
       return existing.promise;
     }
 
-    const bytes = await sources.get(id);
 
-    const task = pdfjs.getDocument({
-      data: bytes.slice(),
-      ...options,
+    const loaded = {} as LoadedDocument;
+
+
+    loaded.promise = sources.get(id).then((bytes) => {
+
+      const task = pdfjs.getDocument({
+        data: bytes.slice(),
+        ...options,
+      });
+
+
+      loaded.task = task;
+
+
+      return task.promise;
+
     });
 
-    const loaded: LoadedDocument = {
-      task,
-      promise: task.promise,
-    };
 
     docs.set(id, loaded);
 
+
     loaded.promise.catch(() => {
+
       if (docs.get(id) === loaded) {
         docs.delete(id);
       }
+
     });
+
 
     return loaded.promise;
   };
@@ -65,12 +78,17 @@ export function createPdfJsRenderer(
 
     async render({ sourceId, index, rotation, scale, canvas, signal }) {
 
-      let release: (() => void);
+      let release: () => void;
+
 
       try {
+
         release = await limiter.acquire(signal);
+
       } catch {
+
         return null;
+
       }
 
 
@@ -100,7 +118,7 @@ export function createPdfJsRenderer(
 
 
           const dpr =
-            (globalThis as { devicePixelRatio?: number }).devicePixelRatio ?? 1;
+            (globalThis as { devicePixelRatio?: string }).devicePixelRatio ?? 1;
 
 
           const plan = planCanvas(
@@ -135,16 +153,12 @@ export function createPdfJsRenderer(
           });
 
 
-          const onAbort = (): void => {
-            task.cancel();
-          };
+          const onAbort = (): void => task.cancel();
 
 
-          signal?.addEventListener(
-            'abort',
-            onAbort,
-            { once: true }
-          );
+          signal?.addEventListener('abort', onAbort, {
+            once: true,
+          });
 
 
           try {
@@ -164,10 +178,7 @@ export function createPdfJsRenderer(
 
           } finally {
 
-            signal?.removeEventListener(
-              'abort',
-              onAbort
-            );
+            signal?.removeEventListener('abort', onAbort);
 
           }
 
@@ -197,6 +208,7 @@ export function createPdfJsRenderer(
 
       const loaded = docs.get(sourceId);
 
+
       if (!loaded) {
         return;
       }
@@ -205,9 +217,13 @@ export function createPdfJsRenderer(
       docs.delete(sourceId);
 
 
-      await loaded.task
-        .destroy()
-        .catch(() => undefined);
+      if (loaded.task) {
+
+        await loaded.task
+          .destroy()
+          .catch(() => undefined);
+
+      }
 
     },
 
@@ -216,15 +232,27 @@ export function createPdfJsRenderer(
 
       const all = [...docs.values()];
 
+
       docs.clear();
 
 
       await Promise.all(
-        all.map((loaded) =>
-          loaded.task
-            .destroy()
-            .catch(() => undefined)
-        )
+
+        all.map((loaded) => {
+
+          if (loaded.task) {
+
+            return loaded.task
+              .destroy()
+              .catch(() => undefined);
+
+          }
+
+
+          return Promise.resolve();
+
+        })
+
       );
 
     },
