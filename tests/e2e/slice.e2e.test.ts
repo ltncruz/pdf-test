@@ -78,16 +78,36 @@ async function mainCanvasInfo(page: Page) {
   });
 }
 
+/** Reabre o PDF exportado com PDF.js (independente do pdf-lib) e devolve o que interessa. */
 async function reopen(bytes: Uint8Array) {
-  const doc = await nodePdfJs.getDocument({ data: bytes.slice(), standardFontDataUrl: new URL('../../node_modules/pdfjs-dist/standard_fonts/', import.meta.url).pathname }).promise;
-  const pages: { rotate: number; view: number[]; text: string }[] = [];
-  for (let n = 1; n <= doc.numPages; n++) {
-    const p = await doc.getPage(n);
-    const tc = await p.getTextContent();
-    pages.push({ rotate: p.rotate, view: p.view as number[], text: tc.items.map((i) => ('str' in i ? i.str : '')).join(' ') });
+  const task = nodePdfJs.getDocument({
+    data: bytes.slice(),
+    standardFontDataUrl: new URL('../../node_modules/pdfjs-dist/standard_fonts/', import.meta.url).pathname,
+  });
+
+  const doc = await task.promise;
+
+  try {
+    const pages: { rotate: number; view: number[]; text: string }[] = [];
+
+    for (let n = 1; n <= doc.numPages; n++) {
+      const p = await doc.getPage(n);
+      const tc = await p.getTextContent();
+
+      pages.push({
+        rotate: p.rotate,
+        view: p.view as number[],
+        text: tc.items
+          .map((i) => ('str' in i ? i.str : ''))
+          .join(' '),
+      });
+    }
+
+    return pages;
+
+  } finally {
+    await task.destroy().catch(() => undefined);
   }
-  await doc.destroy();
-  return pages;
 }
 
 describe('slice v0.1–v0.5 no navegador', () => {
