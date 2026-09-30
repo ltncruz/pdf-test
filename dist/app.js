@@ -50487,27 +50487,22 @@ function createPdfJsRenderer(pdfjs2, sources, options = {}, limits = DEFAULT_LIM
     if (existing) {
       return existing.promise;
     }
-    const loaded = sources.get(id).then((bytes) => {
+    const loaded = {};
+    loaded.promise = sources.get(id).then((bytes) => {
       const task = pdfjs2.getDocument({
         data: bytes.slice(),
         ...options
       });
-      const promise = task.promise;
-      docs.set(id, {
-        task,
-        promise
-      });
-      return promise;
+      loaded.task = task;
+      return task.promise;
     });
-    const cached = {
-      task: void 0,
-      promise: loaded
-    };
-    docs.set(id, cached);
-    loaded.catch(() => {
-      docs.delete(id);
+    docs.set(id, loaded);
+    loaded.promise.catch(() => {
+      if (docs.get(id) === loaded) {
+        docs.delete(id);
+      }
     });
-    return loaded;
+    return loaded.promise;
   };
   return {
     async render({ sourceId, index, rotation, scale: scale2, canvas, signal }) {
@@ -50518,11 +50513,15 @@ function createPdfJsRenderer(pdfjs2, sources, options = {}, limits = DEFAULT_LIM
         return null;
       }
       try {
-        if (signal?.aborted) return null;
+        if (signal?.aborted) {
+          return null;
+        }
         const doc = await open(sourceId);
         const page = await doc.getPage(index + 1);
         try {
-          if (signal?.aborted) return null;
+          if (signal?.aborted) {
+            return null;
+          }
           const viewport = page.getViewport({
             scale: clampRenderScale(scale2, limits),
             rotation
@@ -50576,8 +50575,11 @@ function createPdfJsRenderer(pdfjs2, sources, options = {}, limits = DEFAULT_LIM
     },
     async release(sourceId) {
       const loaded = docs.get(sourceId);
+      if (!loaded) {
+        return;
+      }
       docs.delete(sourceId);
-      if (loaded?.task) {
+      if (loaded.task) {
         await loaded.task.destroy().catch(() => void 0);
       }
     },
@@ -50585,9 +50587,12 @@ function createPdfJsRenderer(pdfjs2, sources, options = {}, limits = DEFAULT_LIM
       const all = [...docs.values()];
       docs.clear();
       await Promise.all(
-        all.map(
-          (loaded) => loaded.task ? loaded.task.destroy().catch(() => void 0) : Promise.resolve()
-        )
+        all.map((loaded) => {
+          if (loaded.task) {
+            return loaded.task.destroy().catch(() => void 0);
+          }
+          return Promise.resolve();
+        })
       );
     }
   };
