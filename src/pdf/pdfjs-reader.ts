@@ -18,7 +18,7 @@ type PdfDoc = PdfJsNamespace.PDFDocumentProxy;
 /** Abre o documento e garante que o loading task não vaza quando o carregamento falha. */
 async function load(pdfjs: PdfJs, options: PdfJsOptions, bytes: Uint8Array): Promise<PdfDoc> {
   // PDF.js TRANSFERE (destaca) o buffer recebido para o worker: sempre passar uma cópia.
-  const task = pdfjs.getDocument({ data: bytes.slice(), isEvalSupported: false, ...options });
+  const task = pdfjs.getDocument({ data: bytes.slice(), ...options });
   try {
     return await task.promise;
   } catch (error) {
