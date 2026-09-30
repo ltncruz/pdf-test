@@ -27,9 +27,23 @@ function qpdfOk(bytes: Uint8Array): boolean {
   }
 }
 const fontsUrl = new URL('../../node_modules/pdfjs-dist/standard_fonts/', import.meta.url).pathname;
-async function withPdfJs<T>(bytes: Uint8Array, fn: (doc: Awaited<ReturnType<typeof nodePdfJs.getDocument>['promise']>) => Promise<T>): Promise<T> {
-  const doc = await nodePdfJs.getDocument({ data: bytes.slice(), standardFontDataUrl: fontsUrl }).promise;
-  try { return await fn(doc); } finally { await doc.destroy(); }
+async function withPdfJs<T>(
+  bytes: Uint8Array,
+  fn: (doc: Awaited<ReturnType<typeof nodePdfJs.getDocument>['promise']>) => Promise<T>
+): Promise<T> {
+
+  const task = nodePdfJs.getDocument({
+    data: bytes.slice(),
+    standardFontDataUrl: fontsUrl,
+  });
+
+  const doc = await task.promise;
+
+  try {
+    return await fn(doc);
+  } finally {
+    await task.destroy().catch(() => undefined);
+  }
 }
 const pageIds = (s: DocumentState): PageId[] => [...s.pageOrder];
 const textBox = (env: TestEnv, text: string, rect = { x: 30, y: 30, w: 250, h: 40 }) => ({ id: env.ids.object(), kind: 'text' as const, rect, text, fontSize: 14, color: { r: 0, g: 0, b: 0.5 } });
