@@ -20,18 +20,43 @@ function text(env: TestEnv, over: Partial<TextObject> = {}): TextObject {
 
 /** Reabre o PDF exportado com PDF.js (independente do pdf-lib) e devolve o que interessa. */
 async function reopen(bytes: Uint8Array) {
-  const doc = await nodePdfJs.getDocument({ data: bytes.slice(), standardFontDataUrl: new URL('../../node_modules/pdfjs-dist/standard_fonts/', import.meta.url).pathname }).promise;
-  const pages = [];
-  for (let n = 1; n <= doc.numPages; n++) {
-    const p = await doc.getPage(n);
-    const tc = await p.getTextContent();
-    const items = tc.items.filter((i): i is (typeof tc.items)[number] & { str: string; transform: number[] } => 'str' in i && i.str.trim() !== '');
-    pages.push({ rotate: p.rotate, view: p.view as number[], items: items.map((i) => ({ str: i.str, x: i.transform[4] as number, y: i.transform[5] as number })), text: items.map((i) => i.str).join(' ') });
-  }
-  await doc.destroy();
-  return pages;
-}
+  const task = nodePdfJs.getDocument({
+    data: bytes.slice(),
+    standardFontDataUrl: new URL('../../node_modules/pdfjs-dist/standard_fonts/', import.meta.url).pathname,
+  });
 
+  const doc = await task.promise;
+
+  try {
+    const pages = [];
+
+    for (let n = 1; n <= doc.numPages; n++) {
+      const p = await doc.getPage(n);
+      const tc = await p.getTextContent();
+
+      const items = tc.items.filter(
+        (i): i is (typeof tc.items)[number] & { str: string; transform: number[] } =>
+          'str' in i && i.str.trim() !== ''
+      );
+
+      pages.push({
+        rotate: p.rotate,
+        view: p.view as number[],
+        items: items.map((i) => ({
+          str: i.str,
+          x: i.transform[4] as number,
+          y: i.transform[5] as number,
+        })),
+        text: items.map((i) => i.str).join(' '),
+      });
+    }
+
+    return pages;
+
+  } finally {
+    await task.destroy().catch(() => undefined);
+  }
+}
 function qpdfCheck(bytes: Uint8Array): { ok: boolean; npages: number } {
   const dir = mkdtempSync(join(tmpdir(), 'simply-pdf-'));
   try {
