@@ -1,5 +1,5 @@
 export type AnnotationEditorUIManager = import("./tools.js").AnnotationEditorUIManager;
-export type PageViewport = import("../display_utils.js").PageViewport;
+export type PageViewport = import("../page_viewport.js").PageViewport;
 export type TextAccessibilityManager = import("../../../web/text_accessibility.js").TextAccessibilityManager;
 export type AnnotationLayer = import("../annotation_layer.js").AnnotationLayer;
 export type DrawLayer = import("../draw_layer.js").DrawLayer;
@@ -46,14 +46,14 @@ export type RenderEditorLayerOptions = {
  */
 export class AnnotationEditorLayer {
     static _initialized: boolean;
-    static "__#private@#editorTypes": Map<number, typeof FreeTextEditor | typeof HighlightEditor | typeof InkEditor | typeof SignatureEditor | typeof StampEditor>;
+    static #editorTypes: Map<number, typeof FreeTextEditor | typeof HighlightEditor | typeof InkEditor | typeof SignatureEditor | typeof StampEditor>;
     /**
      * @param {AnnotationEditorLayerOptions} options
      */
     constructor({ uiManager, pageIndex, div, structTreeLayer, accessibilityManager, annotationLayer, drawLayer, textLayer, viewport, l10n, }: AnnotationEditorLayerOptions);
     pageIndex: number;
     div: HTMLDivElement;
-    viewport: import("../display_utils.js").PageViewport;
+    viewport: import("../page_viewport.js").PageViewport;
     drawLayer: import("../draw_layer.js").DrawLayer;
     _structTree: import("../../../web/struct_tree_layer_builder.js").StructTreeLayerBuilder;
     get isEmpty(): boolean;
