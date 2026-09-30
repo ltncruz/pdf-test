@@ -8,15 +8,13 @@ Gerado por `node scripts/licenses.mjs` (não edite à mão; `npm run licenses --
 
 | Pacote | Versão instalada | Licença (package.json) | Arquivos de licença lidos | NOTICE | Requerido por |
 |---|---|---|---|---|---|
-| @napi-rs/canvas | 0.1.100 | MIT | LICENSE (sha256 8802fecf9da4) | — | pdfjs-dist@5.6.205 |
-| @napi-rs/canvas-linux-x64-gnu | 0.1.100 | MIT | LICENSE (herdado de @napi-rs/canvas@0.1.100) (sha256 8802fecf9da4) | — | @napi-rs/canvas@0.1.100 |
-| @napi-rs/canvas-linux-x64-musl | 0.1.100 | MIT | LICENSE (herdado de @napi-rs/canvas@0.1.100) (sha256 8802fecf9da4) | — | @napi-rs/canvas@0.1.100 |
+| @napi-rs/canvas | 1.0.9 | MIT | LICENSE (sha256 8802fecf9da4) | — | pdfjs-dist@6.3.289 |
+| @napi-rs/canvas-linux-x64-gnu | 1.0.9 | MIT | LICENSE (herdado de @napi-rs/canvas@1.0.9) (sha256 8802fecf9da4) | — | @napi-rs/canvas@1.0.9 |
 | @pdf-lib/standard-fonts | 1.0.0 | MIT | LICENSE.md (sha256 45cc2bb9957e) | — | pdf-lib@1.17.1 |
 | @pdf-lib/upng | 1.0.1 | MIT | LICENSE (sha256 c1fb8861eca2) | — | pdf-lib@1.17.1 |
-| node-readable-to-web-readable-stream | 0.4.2 | MIT | LICENSE.txt (sha256 d1b111f5a5b6) | — | pdfjs-dist@5.6.205 |
 | pako | 1.0.11 | (MIT AND Zlib) | LICENSE (sha256 a04665b3b2de) | — | @pdf-lib/standard-fonts@1.0.0 |
 | pdf-lib | 1.17.1 | MIT | LICENSE.md (sha256 f2c9fc00fdb6) | — | (projeto) |
-| pdfjs-dist | 5.6.205 | Apache-2.0 | LICENSE (sha256 0d542e0c8804) | — | (projeto) |
+| pdfjs-dist | 6.3.289 | Apache-2.0 | LICENSE (sha256 0d542e0c8804) | — | (projeto) |
 | react | 19.2.5 | MIT | LICENSE (sha256 da6d3703ed11) | — | (projeto) |
 | react-dom | 19.2.5 | MIT | LICENSE (sha256 da6d3703ed11) | — | (projeto) |
 | scheduler | 0.27.0 | MIT | LICENSE (sha256 da6d3703ed11) | — | react-dom@19.2.5 |
@@ -27,8 +25,10 @@ Gerado por `node scripts/licenses.mjs` (não edite à mão; `npm run licenses --
 | Pacote | Versão instalada | Licença (package.json) | Arquivos de licença lidos | NOTICE | Requerido por |
 |---|---|---|---|---|---|
 | @esbuild/linux-x64 | 0.27.7 | MIT | LICENSE.md (herdado de esbuild@0.27.7) (sha256 b40ec5baec7b) | — | esbuild@0.27.7 |
+| @esbuild/linux-x64 | 0.28.2 | MIT | LICENSE.md (herdado de esbuild@0.28.2) (sha256 b40ec5baec7b) | — | esbuild@0.28.2 |
 | @types/node | 25.6.0 | MIT | LICENSE (sha256 c2cfccb812fe) | — | (projeto) |
-| esbuild | 0.27.7 | MIT | LICENSE.md (sha256 b40ec5baec7b) | — | (projeto) |
+| esbuild | 0.27.7 | MIT | LICENSE.md (sha256 b40ec5baec7b) | — | tsx@4.21.0 |
+| esbuild | 0.28.2 | MIT | LICENSE.md (sha256 b40ec5baec7b) | — | (projeto) |
 | get-tsconfig | 4.14.3 | MIT | LICENSE (sha256 10c904a49af4) | — | tsx@4.21.0 |
 | playwright | 1.56.0 | Apache-2.0 | LICENSE (sha256 45873d00a0dd) | NOTICE (sha256 6d602191187b); ThirdPartyNotices.txt (sha256 2eba4794fdff) | (projeto) |
 | playwright-core | 1.56.0 | Apache-2.0 | LICENSE (sha256 45873d00a0dd) | NOTICE (sha256 6d602191187b); ThirdPartyNotices.txt (sha256 450299275b0e) | playwright@1.56.0 |
@@ -72,40 +72,66 @@ Esses assets são usados só pelo viewer para desenhar fontes padrão NÃO incor
 
 ## Dependências opcionais não instaladas neste ambiente
 
+- `@esbuild/aix-ppc64` (opcional de `esbuild@0.28.2`)
 - `@esbuild/aix-ppc64` (opcional de `esbuild@0.27.7`)
+- `@esbuild/android-arm` (opcional de `esbuild@0.28.2`)
 - `@esbuild/android-arm` (opcional de `esbuild@0.27.7`)
+- `@esbuild/android-arm64` (opcional de `esbuild@0.28.2`)
 - `@esbuild/android-arm64` (opcional de `esbuild@0.27.7`)
+- `@esbuild/android-x64` (opcional de `esbuild@0.28.2`)
 - `@esbuild/android-x64` (opcional de `esbuild@0.27.7`)
+- `@esbuild/darwin-arm64` (opcional de `esbuild@0.28.2`)
 - `@esbuild/darwin-arm64` (opcional de `esbuild@0.27.7`)
+- `@esbuild/darwin-x64` (opcional de `esbuild@0.28.2`)
 - `@esbuild/darwin-x64` (opcional de `esbuild@0.27.7`)
+- `@esbuild/freebsd-arm64` (opcional de `esbuild@0.28.2`)
 - `@esbuild/freebsd-arm64` (opcional de `esbuild@0.27.7`)
+- `@esbuild/freebsd-x64` (opcional de `esbuild@0.28.2`)
 - `@esbuild/freebsd-x64` (opcional de `esbuild@0.27.7`)
+- `@esbuild/linux-arm` (opcional de `esbuild@0.28.2`)
 - `@esbuild/linux-arm` (opcional de `esbuild@0.27.7`)
+- `@esbuild/linux-arm64` (opcional de `esbuild@0.28.2`)
 - `@esbuild/linux-arm64` (opcional de `esbuild@0.27.7`)
+- `@esbuild/linux-ia32` (opcional de `esbuild@0.28.2`)
 - `@esbuild/linux-ia32` (opcional de `esbuild@0.27.7`)
+- `@esbuild/linux-loong64` (opcional de `esbuild@0.28.2`)
 - `@esbuild/linux-loong64` (opcional de `esbuild@0.27.7`)
+- `@esbuild/linux-mips64el` (opcional de `esbuild@0.28.2`)
 - `@esbuild/linux-mips64el` (opcional de `esbuild@0.27.7`)
+- `@esbuild/linux-ppc64` (opcional de `esbuild@0.28.2`)
 - `@esbuild/linux-ppc64` (opcional de `esbuild@0.27.7`)
+- `@esbuild/linux-riscv64` (opcional de `esbuild@0.28.2`)
 - `@esbuild/linux-riscv64` (opcional de `esbuild@0.27.7`)
+- `@esbuild/linux-s390x` (opcional de `esbuild@0.28.2`)
 - `@esbuild/linux-s390x` (opcional de `esbuild@0.27.7`)
+- `@esbuild/netbsd-arm64` (opcional de `esbuild@0.28.2`)
 - `@esbuild/netbsd-arm64` (opcional de `esbuild@0.27.7`)
+- `@esbuild/netbsd-x64` (opcional de `esbuild@0.28.2`)
 - `@esbuild/netbsd-x64` (opcional de `esbuild@0.27.7`)
+- `@esbuild/openbsd-arm64` (opcional de `esbuild@0.28.2`)
 - `@esbuild/openbsd-arm64` (opcional de `esbuild@0.27.7`)
+- `@esbuild/openbsd-x64` (opcional de `esbuild@0.28.2`)
 - `@esbuild/openbsd-x64` (opcional de `esbuild@0.27.7`)
+- `@esbuild/openharmony-arm64` (opcional de `esbuild@0.28.2`)
 - `@esbuild/openharmony-arm64` (opcional de `esbuild@0.27.7`)
+- `@esbuild/sunos-x64` (opcional de `esbuild@0.28.2`)
 - `@esbuild/sunos-x64` (opcional de `esbuild@0.27.7`)
+- `@esbuild/win32-arm64` (opcional de `esbuild@0.28.2`)
 - `@esbuild/win32-arm64` (opcional de `esbuild@0.27.7`)
+- `@esbuild/win32-ia32` (opcional de `esbuild@0.28.2`)
 - `@esbuild/win32-ia32` (opcional de `esbuild@0.27.7`)
+- `@esbuild/win32-x64` (opcional de `esbuild@0.28.2`)
 - `@esbuild/win32-x64` (opcional de `esbuild@0.27.7`)
-- `@napi-rs/canvas-android-arm64` (opcional de `@napi-rs/canvas@0.1.100`)
-- `@napi-rs/canvas-darwin-arm64` (opcional de `@napi-rs/canvas@0.1.100`)
-- `@napi-rs/canvas-darwin-x64` (opcional de `@napi-rs/canvas@0.1.100`)
-- `@napi-rs/canvas-linux-arm-gnueabihf` (opcional de `@napi-rs/canvas@0.1.100`)
-- `@napi-rs/canvas-linux-arm64-gnu` (opcional de `@napi-rs/canvas@0.1.100`)
-- `@napi-rs/canvas-linux-arm64-musl` (opcional de `@napi-rs/canvas@0.1.100`)
-- `@napi-rs/canvas-linux-riscv64-gnu` (opcional de `@napi-rs/canvas@0.1.100`)
-- `@napi-rs/canvas-win32-arm64-msvc` (opcional de `@napi-rs/canvas@0.1.100`)
-- `@napi-rs/canvas-win32-x64-msvc` (opcional de `@napi-rs/canvas@0.1.100`)
+- `@napi-rs/canvas-android-arm64` (opcional de `@napi-rs/canvas@1.0.9`)
+- `@napi-rs/canvas-darwin-arm64` (opcional de `@napi-rs/canvas@1.0.9`)
+- `@napi-rs/canvas-darwin-x64` (opcional de `@napi-rs/canvas@1.0.9`)
+- `@napi-rs/canvas-linux-arm-gnueabihf` (opcional de `@napi-rs/canvas@1.0.9`)
+- `@napi-rs/canvas-linux-arm64-gnu` (opcional de `@napi-rs/canvas@1.0.9`)
+- `@napi-rs/canvas-linux-arm64-musl` (opcional de `@napi-rs/canvas@1.0.9`)
+- `@napi-rs/canvas-linux-riscv64-gnu` (opcional de `@napi-rs/canvas@1.0.9`)
+- `@napi-rs/canvas-linux-x64-musl` (opcional de `@napi-rs/canvas@1.0.9`)
+- `@napi-rs/canvas-win32-arm64-msvc` (opcional de `@napi-rs/canvas@1.0.9`)
+- `@napi-rs/canvas-win32-x64-msvc` (opcional de `@napi-rs/canvas@1.0.9`)
 - `fsevents` (opcional de `playwright@1.56.0`)
 - `fsevents` (opcional de `tsx@4.21.0`)
 
