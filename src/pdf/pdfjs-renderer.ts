@@ -16,7 +16,7 @@ export function createPdfJsRenderer(pdfjs: PdfJs, sources: SourceStore, options:
   const open = (id: SourceId): Promise<PdfJsNamespace.PDFDocumentProxy> => {
     let doc = docs.get(id);
     if (!doc) {
-      doc = sources.get(id).then((bytes) => pdfjs.getDocument({ data: bytes.slice(), isEvalSupported: false, ...options }).promise);
+      doc = sources.get(id).then((bytes) => pdfjs.getDocument({ data: bytes.slice(), ...options }).promise);
       // Se a abertura falhar, não deixar a promessa rejeitada em cache.
       doc.catch(() => docs.delete(id));
       docs.set(id, doc);
