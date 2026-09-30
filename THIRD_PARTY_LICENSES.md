@@ -10,6 +10,7 @@ Gerado por `node scripts/licenses.mjs` (não edite à mão; `npm run licenses --
 |---|---|---|---|---|---|
 | @napi-rs/canvas | 1.0.9 | MIT | LICENSE (sha256 8802fecf9da4) | — | pdfjs-dist@6.3.289 |
 | @napi-rs/canvas-linux-x64-gnu | 1.0.9 | MIT | LICENSE (herdado de @napi-rs/canvas@1.0.9) (sha256 8802fecf9da4) | — | @napi-rs/canvas@1.0.9 |
+| @napi-rs/canvas-linux-x64-musl | 1.0.9 | MIT | LICENSE (herdado de @napi-rs/canvas@1.0.9) (sha256 8802fecf9da4) | — | @napi-rs/canvas@1.0.9 |
 | @pdf-lib/standard-fonts | 1.0.0 | MIT | LICENSE.md (sha256 45cc2bb9957e) | — | pdf-lib@1.17.1 |
 | @pdf-lib/upng | 1.0.1 | MIT | LICENSE (sha256 c1fb8861eca2) | — | pdf-lib@1.17.1 |
 | pako | 1.0.11 | (MIT AND Zlib) | LICENSE (sha256 a04665b3b2de) | — | @pdf-lib/standard-fonts@1.0.0 |
@@ -129,7 +130,6 @@ Esses assets são usados só pelo viewer para desenhar fontes padrão NÃO incor
 - `@napi-rs/canvas-linux-arm64-gnu` (opcional de `@napi-rs/canvas@1.0.9`)
 - `@napi-rs/canvas-linux-arm64-musl` (opcional de `@napi-rs/canvas@1.0.9`)
 - `@napi-rs/canvas-linux-riscv64-gnu` (opcional de `@napi-rs/canvas@1.0.9`)
-- `@napi-rs/canvas-linux-x64-musl` (opcional de `@napi-rs/canvas@1.0.9`)
 - `@napi-rs/canvas-win32-arm64-msvc` (opcional de `@napi-rs/canvas@1.0.9`)
 - `@napi-rs/canvas-win32-x64-msvc` (opcional de `@napi-rs/canvas@1.0.9`)
 - `fsevents` (opcional de `playwright@1.56.0`)
